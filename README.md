@@ -20,7 +20,7 @@ El estado del arte y los antecedentes relacionados con el proyecto se encuentran
 
 ## Objetivo principal
 
-**Diseñar, construir y validar un prototipo de máquina universal de ensayos de fuerza de bajo costo**, capaz de aplicar una fuerza controlada y registrar la respuesta mecánica de diferentes muestras.
+**Diseñar, construir y validar un prototipo de máquina universal de ensayos de fuerza de bajo costo**, capaz de aplicar una fuerza controlada (fuerza maxima limite de 100N) y registrar la respuesta mecánica de diferentes muestras.
 
 ## Objetivos específicos
 
