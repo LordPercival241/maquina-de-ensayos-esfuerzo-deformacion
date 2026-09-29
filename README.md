@@ -1,3 +1,158 @@
+# Máquina Universal de Ensayos de Fuerza de Bajo Costo
+
+## Introducción
+
+La **ciencia de materiales** estudia las propiedades físicas y químicas de los materiales con el objetivo de comprender su comportamiento y desarrollar aplicaciones tecnológicas. Entre las propiedades mecánicas de interés se encuentran la resistencia a la tracción, la deformación y el módulo de Young.
+
+Para determinar estas propiedades, normalmente se utilizan **máquinas universales de ensayos**, las cuales permiten aplicar fuerzas controladas sobre una muestra y registrar su respuesta mecánica. Sin embargo, estos equipos suelen presentar un costo elevado, grandes dimensiones y características que pueden resultar innecesarias cuando se trabaja con muestras pequeñas o cuando se busca realizar ensayos específicos.
+
+Ante esta problemática, se propone el **diseño y construcción de una máquina universal de ensayos de fuerza de bajo costo y dimensiones reducidas**, empleando componentes comerciales y sistemas de adquisición de datos de fácil acceso. El prototipo estará orientado principalmente al ensayo de muestras de polímeros y permitirá obtener información relacionada con la fuerza aplicada y la elongación de la muestra.
+
+El proyecto integra las áreas de **software, instrumentación electrónica, mecánica y potencia**, buscando desarrollar un sistema funcional que permita realizar ensayos mecánicos de manera accesible.
+
+## Estado del arte
+
+El estado del arte y los antecedentes relacionados con el proyecto se encuentran disponibles en los archivos incluidos en este repositorio.
+
+---
+
+# Objetivos
+
+## Objetivo principal
+
+**Diseñar, construir y validar un prototipo de máquina universal de ensayos de fuerza de bajo costo**, capaz de aplicar una fuerza controlada y registrar la respuesta mecánica de diferentes muestras.
+
+## Objetivos específicos
+
+* Diseñar y construir la estructura mecánica del prototipo.
+* Implementar el sistema de accionamiento mediante un motor paso a paso.
+* Implementar y validar el sistema de acondicionamiento y adquisición de señales de una celda de carga de 10 kg.
+* Desarrollar un sistema de adquisición y visualización de datos mediante Arduino y software de procesamiento.
+* Obtener las curvas de **esfuerzo-deformación** a partir de los datos registrados.
+* Evaluar la respuesta del prototipo utilizando diferentes muestras de polímeros.
+* Determinar experimentalmente parámetros como la fuerza aplicada, elongación y, cuando las dimensiones de la muestra sean conocidas, el esfuerzo y la deformación.
+* Evaluar la resolución y repetibilidad del prototipo.
+
+---
+
+# Integrantes y responsabilidades
+
+## Dante Aliguere Olivas Huaman
+
+### Etapa de software
+
+Encargado del desarrollo del software para la adquisición, procesamiento y visualización de los datos obtenidos por el prototipo.
+
+Entre sus principales funciones se encuentran:
+
+* Desarrollar el sistema de lectura de datos.
+* Procesar los datos obtenidos durante el ensayo.
+* Generar las gráficas de **esfuerzo vs. deformación**.
+* Implementar las herramientas necesarias para visualizar y almacenar los resultados experimentales.
+
+El desarrollo del software se encuentra parcialmente avanzado y está disponible en este repositorio.
+
+---
+
+## Jhosep A. Tineo Santa Cruz
+
+### Etapa de instrumentación
+
+Encargado del sistema de medición de fuerza mediante una **celda de carga de 10 kg**.
+
+Sus principales funciones son:
+
+* Implementar el acondicionamiento de la señal de la celda de carga.
+* Integrar la celda de carga con el sistema de adquisición de datos.
+* Verificar el correcto funcionamiento del sistema de medición.
+* Realizar posteriormente la calibración de la celda de carga.
+* Evaluar la respuesta y estabilidad del sistema de medición.
+
+Actualmente se cuenta con los componentes necesarios y se encuentra en proceso la verificación de su correcto funcionamiento antes de realizar la calibración.
+
+---
+
+## Juan Jesus Agüero Ventura
+
+### Etapa mecánica
+
+Encargado del diseño y desarrollo de la estructura mecánica del prototipo.
+
+Sus principales funciones son:
+
+* Desarrollar el modelo CAD de la máquina.
+* Diseñar las pinzas de sujeción de las muestras.
+* Diseñar la base y los soportes para los diferentes componentes.
+* Determinar las dimensiones y características mecánicas necesarias para el funcionamiento del prototipo.
+* Realizar cálculos relacionados con la resolución y desplazamiento del sistema.
+
+Los avances realizados hasta el momento incluyen la modificación de modelos existentes y funcionales para adaptarlos a las especificaciones del proyecto. En caso de ser necesario, se desarrollarán nuevas piezas específicamente para el prototipo.
+
+---
+
+## Andre Edmundo Sanchez Marquina
+
+### Etapa de potencia y accionamiento
+
+Encargado del sistema de potencia y del accionamiento mecánico mediante un **motor paso a paso NEMA 17**.
+
+Sus principales funciones son:
+
+* Seleccionar y poner en funcionamiento el motor paso a paso.
+* Determinar los requerimientos de corriente y tensión del sistema.
+* Realizar los cálculos de consumo energético.
+* Seleccionar una fuente de alimentación adecuada.
+* Implementar el sistema de potencia necesario para el accionamiento del prototipo.
+
+El motor paso a paso será el elemento encargado de proporcionar el movimiento necesario para aplicar la fuerza y producir el desplazamiento durante el ensayo.
+
+---
+
+# Integración del proyecto
+
+Aunque cada integrante posee una responsabilidad principal, el desarrollo del prototipo requiere la integración de todas las etapas.
+
+Los integrantes mantendrán comunicación constante para compartir parámetros, dimensiones, requerimientos eléctricos, datos experimentales y demás variables necesarias para garantizar la compatibilidad entre los diferentes subsistemas.
+
+ 
+
+# Electrónica y control
+
+**Se ha decidido utilizar un** **Arduino Uno como microcontrolador principal del proyecto**.
+
+ 
+
+# Estado actual del proyecto
+
+Los principales avances realizados hasta el momento son:
+
+* [x] Definición general del proyecto.
+* [x] Distribución de responsabilidades entre los integrantes.
+* [x] Selección inicial de Arduino Uno como microcontrolador.
+* [x] Adquisición de la celda de carga de 10 kg.
+* [x] Adquisición de los componentes principales.
+* [x] Desarrollo inicial del software.
+* [ ] Validación del acondicionamiento de la celda de carga.
+* [ ] Calibración del sistema de medición.
+* [ ] Diseño mecánico definitivo.
+* [ ] Implementación del sistema de accionamiento.
+* [ ] Integración de los subsistemas.
+* [ ] Pruebas con muestras de polímeros.
+* [ ] Obtención y análisis de curvas esfuerzo-deformación.
+* [ ] Validación final del prototipo.
+
+# &#x20;
+
+
+
+![Diagrama de Flujo] Imagenes/grafico_flujo.png
+
+
+ 
+
+#Software
+
+
 # UTM Lab — Máquina universal de ensayos de fuerza low cost
 
 UTM Lab es una plataforma web para operar, adquirir y conservar datos de ensayos uniaxiales de fuerza. Está pensada para desplegarse en Vercel y conectarse, desde el navegador del operador, a un controlador local —inicialmente un Arduino Nano— mediante cable USB/serial.
