@@ -146,6 +146,11 @@ Los principales avances realizados hasta el momento son:
 
 
 ![Diagrama de Flujo] Imagenes/grafico_flujo.png
+<p align="center">
+  <img src="Imagenes/grafico_flujo.png" width="600">
+</p>
+
+
 
 
  
