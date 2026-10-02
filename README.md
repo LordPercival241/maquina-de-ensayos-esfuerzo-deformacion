@@ -74,9 +74,11 @@ El sistema opera bajo un modelo desacoplado: **el firmware local garantiza la se
 │   Servicios en la Nube                                                                 │
 │   ├── Vercel (Alojamiento Edge/Serverless con HTTPS obligatorio)                       │
 │   ├── Supabase Auth (Acceso seguro por correo y contraseña de operadores)              │
-│   ├── Supabase PostgreSQL + RLS (Metadatos de probetas y trazabilidad)                 │
-│   ├── Supabase Storage (Bucket privado 'test-data' para almacenamiento de CSV)         │
 │   └── OpenAI API (Respuestas contextualizadas para el agente de soporte técnico)       │
+│                                                                                        │
+│   * Nota de Almacenamiento: Todos los datos de ensayos (muestras, curvas y reportes    │
+│     en PDF/CSV) se generan 100% en la memoria del navegador y se descargan a la        │
+│     máquina local del operador, sin consumir almacenamiento en la nube de Supabase.    │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -87,10 +89,13 @@ El sistema opera bajo un modelo desacoplado: **el firmware local garantiza la se
 La aplicación web ha sido construida con los más altos estándares modernos de desarrollo:
 
 * **Framework:** [Next.js 15](https://nextjs.org/) con React 19 y TypeScript en App Router.
-* **Adquisición Serial:** [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) en el cliente. Permite seleccionar puertos COM directamente desde el diálogo nativo del navegador, sin servidores intermediarios ni dependencias locales pesadas.
-* **Autenticación y Seguridad:** [Supabase Auth](https://supabase.com/) con **correo y contraseña (Email/Password)**. Toda la base de datos y los archivos CSV están protegidos por políticas **Row Level Security (RLS)** vinculadas al `auth.uid()`.
-* **Visualización:** [Recharts](https://recharts.org/) configurado para trazado en tiempo real. **No se admiten datos de demostración**: la curva solo se grafica a partir de muestras reales confirmadas por el hardware.
-* **Agente de IA Integrado:** Ruta API Serverless en `/api/assistant` conectada a OpenAI Responses API. Proporciona asistencia de diagnóstico al operador con lectura del estado actual de la máquina (`ready`, `running`, `fault`), sin capacidad de intervenir directamente en el control físico por razones de seguridad.
+* **Adquisición Serial:** [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) en el cliente. Permite seleccionar puertos COM directamente desde el diálogo nativo del navegador, sin intermediarios en la nube.
+* **Autenticación:** [Supabase Auth](https://supabase.com/) con **correo y contraseña (Email/Password)**. Supabase se utiliza de forma exclusiva para el registro, inicio de sesión y gestión de accesos de operadores.
+* **Visualización en Vivo:** [Recharts](https://recharts.org/) configurado para trazado en tiempo real sin datos de demostración o sintéticos.
+* **Exportación Local (Cero Consumo Cloud):**
+  - **Reporte PDF Formal:** Generación directa en el navegador con `jsPDF`, que captura la gráfica en alta resolución, incluye la información geométrica de la probeta, los resultados mecánicos calculados ($F_{\max}$, $\sigma_{\max}$, $\varepsilon_{\max}$) y una tabla de puntos representativos.
+  - **Datos Crudos en CSV:** Descarga directa de la matriz completa de mediciones con metadatos versionados para análisis en Excel, Python o MATLAB.
+* **Agente de IA Integrado:** Ruta API Serverless en `/api/assistant` conectada a OpenAI Responses API. Proporciona asistencia de diagnóstico al operador con lectura del estado actual de la máquina (`ready`, `running`, `fault`), sin permisos de control físico directo.
 
 ---
 

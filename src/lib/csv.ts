@@ -1,6 +1,11 @@
 import type { Sample, TestSetup } from "@/lib/test-domain";
 
-const escape = (value: string | number) => `"${String(value).replaceAll('"', '""')}"`;
+const escape = (value: string | number) => {
+  const str = String(value);
+  const isDangerousFormula = typeof value === "string" && /^[=+\-@\t\r]/.test(str);
+  const safeStr = isDangerousFormula ? `'${str}` : str;
+  return `"${safeStr.replaceAll('"', '""')}"`;
+};
 
 export function makeTestCsv(setup: TestSetup, samples: Sample[], droppedSamples: number) {
   const metadata = [

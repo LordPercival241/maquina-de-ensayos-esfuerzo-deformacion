@@ -31,19 +31,35 @@ export async function POST(request: NextRequest) {
   const authClient = createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false, autoRefreshToken: false } });
   const { data: authData, error: authError } = await authClient.auth.getUser(token);
   if (authError || !authData.user) return NextResponse.json({ error: "La sesión no es válida." }, { status: 401 });
-  const parsed = requestSchema.safeParse(await request.json());
+  let rawBody: unknown;
+  try {
+    rawBody = await request.json();
+  } catch {
+    return NextResponse.json({ error: "El cuerpo de la solicitud no es un JSON válido." }, { status: 400 });
+  }
+  const parsed = requestSchema.safeParse(rawBody);
   if (!parsed.success) return NextResponse.json({ error: "Solicitud de ayuda inválida." }, { status: 400 });
   const { message, context } = parsed.data;
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-    body: JSON.stringify({
-      model,
-      instructions,
-      input: `Contexto de solo lectura:\nPantalla: ${context.screen}\nEstado: ${context.machineStatus}\nÚltimo mensaje: ${context.lastMessage || "sin mensaje"}\n\nConsulta del operador: ${message}`
-    })
-  });
-  if (!response.ok) return NextResponse.json({ error: "El asistente no pudo responder en este momento." }, { status: 502 });
-  const result = (await response.json()) as { output_text?: string };
-  return NextResponse.json({ answer: result.output_text || "No se recibió una respuesta de texto." });
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(15000),
+      body: JSON.stringify({
+        model,
+        instructions,
+        input: `Contexto de solo lectura:\nPantalla: ${context.screen}\nEstado: ${context.machineStatus}\nÚltimo mensaje: ${context.lastMessage || "sin mensaje"}\n\nConsulta del operador: ${message}`
+      })
+    });
+    if (!response.ok) return NextResponse.json({ error: "El asistente no pudo responder en este momento." }, { status: 502 });
+    const result = (await response.json()) as { output_text?: string };
+    return NextResponse.json({ answer: result.output_text || "No se recibió una respuesta de texto." });
+  } catch (caught) {
+    const isTimeout = caught instanceof Error && caught.name === "TimeoutError";
+    return NextResponse.json(
+      { error: isTimeout ? "Tiempo de espera agotado al consultar el asistente." : "Error de comunicación con el servicio de IA." },
+      { status: isTimeout ? 504 : 502 }
+    );
+  }
 }
