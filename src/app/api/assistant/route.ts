@@ -19,12 +19,12 @@ Ante un error de seguridad, indica detener el ensayo mediante el procedimiento f
 No inventes características de la máquina, valores de calibración o normas. Responde en español, de forma breve y práctica.`;
 
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const model = process.env.OPENAI_MODEL;
+  const apiKey = process.env.GEMINI_API_KEY;
+  const model = process.env.GEMINI_MODEL || "gemini-3.8-flash";
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
-  if (!apiKey || !model || !supabaseUrl || !supabaseKey) {
+  if (!apiKey || !supabaseUrl || !supabaseKey) {
     return NextResponse.json({ error: "El asistente no está configurado en el servidor." }, { status: 503 });
   }
   if (!token) return NextResponse.json({ error: "Se requiere una sesión válida." }, { status: 401 });
@@ -42,19 +42,41 @@ export async function POST(request: NextRequest) {
   const { message, context } = parsed.data;
 
   try {
-    const response = await fetch("https://api.openai.com/v1/responses", {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      headers: { "Content-Type": "application/json" },
       signal: AbortSignal.timeout(15000),
       body: JSON.stringify({
-        model,
-        instructions,
-        input: `Contexto de solo lectura:\nPantalla: ${context.screen}\nEstado: ${context.machineStatus}\nÚltimo mensaje: ${context.lastMessage || "sin mensaje"}\n\nConsulta del operador: ${message}`
+        system_instruction: {
+          parts: [{ text: instructions }]
+        },
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: `Contexto de solo lectura:\nPantalla: ${context.screen}\nEstado: ${context.machineStatus}\nÚltimo mensaje: ${context.lastMessage || "sin mensaje"}\n\nConsulta del operador: ${message}`
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.4,
+          maxOutputTokens: 800
+        }
       })
     });
     if (!response.ok) return NextResponse.json({ error: "El asistente no pudo responder en este momento." }, { status: 502 });
-    const result = (await response.json()) as { output_text?: string };
-    return NextResponse.json({ answer: result.output_text || "No se recibió una respuesta de texto." });
+    const result = (await response.json()) as {
+      candidates?: Array<{
+        content?: {
+          parts?: Array<{ text?: string }>;
+        };
+      }>;
+    };
+    const answer = result.candidates?.[0]?.content?.parts?.[0]?.text;
+    return NextResponse.json({ answer: answer || "No se recibió una respuesta de texto." });
   } catch (caught) {
     const isTimeout = caught instanceof Error && caught.name === "TimeoutError";
     return NextResponse.json(
