@@ -31,7 +31,7 @@ export async function captureChartAsPng(containerElement: HTMLElement): Promise<
           resolve(null);
           return;
         }
-        ctx.fillStyle = "#0c1c2a";
+        ctx.fillStyle = "#0d1016";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.scale(scale, scale);
         ctx.drawImage(img, 0, 0, width, height);
