@@ -1,24 +1,52 @@
-create extension if not exists pgcrypto;
+-- UTM Lab · Esquema de Supabase
+--
+-- POLÍTICA DE PRIVACIDAD Y ALMACENAMIENTO:
+-- Todos los datos de ensayos mecánicos (muestras numéricas, curvas de esfuerzo-deformación,
+-- archivos CSV y reportes PDF) se procesan y generan 100% en la memoria local del navegador
+-- del operador y se descargan a su computadora.
+--
+-- NO se almacenan archivos masivos ni mediciones en Supabase para evitar consumir el espacio
+-- de almacenamiento gratuito o limitado de la nube.
+--
+-- Supabase se reserva EXCLUSIVAMENTE para:
+-- 1. Autenticación de operadores (auth.users con Email y Contraseña).
+-- 2. Validación de tokens JWT para el Asistente de IA (/api/assistant).
 
-create table public.test_runs (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade default auth.uid(),
-  specimen_id text not null check (char_length(specimen_id) <= 80),
-  material text not null check (char_length(material) <= 120),
-  gauge_length_mm numeric not null check (gauge_length_mm > 0),
-  initial_area_mm2 numeric not null check (initial_area_mm2 > 0),
-  calibration_profile_id text not null,
-  sample_count integer not null check (sample_count >= 0),
-  status text not null check (status in ('completed', 'aborted')),
-  csv_path text unique,
+-- Tabla opcional de perfiles de operadores (para consultar nombres y roles)
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  full_name text,
+  role text default 'operator',
   created_at timestamptz not null default now()
 );
 
-alter table public.test_runs enable row level security;
-create policy "Users can view their own test runs" on public.test_runs for select using (auth.uid() = user_id);
-create policy "Users can create their own test runs" on public.test_runs for insert with check (auth.uid() = user_id);
-create policy "Users can update their own test runs" on public.test_runs for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+alter table public.profiles enable row level security;
 
-insert into storage.buckets (id, name, public) values ('test-data', 'test-data', false) on conflict (id) do nothing;
-create policy "Users can upload their own CSV files" on storage.objects for insert to authenticated with check (bucket_id = 'test-data' and (storage.foldername(name))[1] = auth.uid()::text);
-create policy "Users can read their own CSV files" on storage.objects for select to authenticated using (bucket_id = 'test-data' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "Operadores pueden ver su propio perfil" 
+  on public.profiles for select 
+  using (auth.uid() = id);
+
+create policy "Operadores pueden actualizar su propio perfil" 
+  on public.profiles for update 
+  using (auth.uid() = id);
+
+-- Trigger automático para registrar el perfil cuando un usuario se registra
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (id, email, full_name)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data->>'full_name', 'Operador')
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$ language plpgsql security definer;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();

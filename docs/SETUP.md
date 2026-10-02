@@ -1,7 +1,7 @@
 # UTM Lab · Puesta en marcha
 
 1. Cree un proyecto de Supabase y verifique que el proveedor de autenticación por Correo (Email/Password) esté activo (habilitado por defecto en Supabase).
-2. Ejecute `supabase/migrations/202609180001_initial.sql` en el editor SQL de ese proyecto.
+2. Ejecute `supabase/migrations/202609180001_initial.sql` en el editor SQL de Supabase (crea la tabla de perfiles de operadores). *Nota: Los datos y mediciones de ensayos no se guardan en la nube; se procesan en el navegador y se descargan localmente en PDF y CSV para preservar su cuota de Supabase.*
 3. Copie `.env.example` como `.env.local` y complete las variables. `OPENAI_API_KEY` y `OPENAI_MODEL` se usan sólo en el servidor; no deben empezar con `NEXT_PUBLIC_`.
 4. Instale dependencias con `npm install`, luego ejecute `npm run dev`.
 
