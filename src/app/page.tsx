@@ -284,6 +284,30 @@ export default function HomePage() {
           </div>
         </div>
       </main>
+
+      {/* Footer with Team Credits */}
+      <footer className="border-t border-[#1A2230] bg-[#07080A] px-6 py-8 mt-auto">
+        <div className="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div className="flex flex-col gap-1 text-xs font-mono text-slate-500">
+            <span className="text-slate-400 font-semibold mb-1 uppercase tracking-widest text-[10px]">EQUIPO DE DESARROLLO E INVESTIGACIÓN</span>
+            <div className="flex gap-4">
+              <div className="flex flex-col">
+                <span className="text-white">Dante Olivas</span>
+                <span className="text-laser text-[10px]">Ing. Electrónico</span>
+              </div>
+              <div className="flex flex-col border-l border-[#1A2230] pl-4">
+                <span className="text-white">Eduardo Alarcon</span>
+                <span className="text-laser text-[10px]">Ing. Mecatrónico</span>
+              </div>
+            </div>
+          </div>
+          <div className="text-xs font-mono text-slate-600 md:text-right">
+            UTM-LAB © {new Date().getFullYear()} — Universidad Tecnológica.
+            <br />
+            Sistema de Adquisición de Datos de Grado Metrológico.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

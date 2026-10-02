@@ -113,6 +113,10 @@ export default function DashboardPage() {
   const [exportingPdf, setExportingPdf] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
 
+  // States for toggles
+  const [isSerialOpen, setIsSerialOpen] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+
   // Estado del Asistente Gemini
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
@@ -366,77 +370,87 @@ export default function DashboardPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* 2. GRID ARQUITECTÓNICO DE 3 COLUMNAS DE ALTA DENSIDAD                     */}
+      {/* 2. GRID ARQUITECTÓNICO DE 2 COLUMNAS DE ALTA DENSIDAD                     */}
       {/* ========================================================================= */}
       <main className="flex-1 p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5 max-w-[1720px] mx-auto w-full">
         {/* ======================================================================= */}
         {/* COLUMNA 1 (lg:col-span-3): ENLACE SERIAL Y PARÁMETROS DE PROBETA        */}
         {/* ======================================================================= */}
         <div className="lg:col-span-3 flex flex-col gap-5">
-          {/* Card 1: Enlace Serial COM */}
-          <div className="bg-[#0D1016] border border-[#1A2230] rounded-sm p-4 flex flex-col gap-3">
-            <div className="flex items-center justify-between pb-2 border-b border-[#1A2230]">
+          {/* Card 1: Enlace Serial COM (Desplegable) */}
+          <div className="bg-[#0D1016] border border-[#1A2230] rounded-sm flex flex-col">
+            <button
+              onClick={() => setIsSerialOpen(!isSerialOpen)}
+              className="flex items-center justify-between p-4 hover:bg-[#10141C] transition-colors focus:outline-none"
+            >
               <div className="flex items-center gap-2">
-                <Usb size={16} className="text-cyan-400" />
+                <Usb size={16} className={serial.status === "disconnected" ? "text-slate-500" : "text-cyan-400"} />
                 <h2 className="font-mono text-xs font-bold tracking-wider text-slate-200 uppercase">
                   ENLACE SERIAL // WEB SERIAL API
                 </h2>
               </div>
-              <span className="text-[10px] font-mono text-slate-500">v1.0 (CRC-16)</span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-              <div>
-                <label className="text-[11px] text-slate-400 block mb-1">BAUD RATE</label>
-                <select
-                  value={baudRate}
-                  onChange={(e) => setBaudRate(e.target.value)}
-                  disabled={serial.status !== "disconnected"}
-                  className="w-full bg-[#131720] border border-[#1E2532] text-white px-2 py-1.5 rounded-sm focus:border-cyan-400 outline-none"
-                >
-                  <option value="115200">115200 baud</option>
-                  <option value="57600">57600 baud</option>
-                  <option value="9600">9600 baud</option>
-                </select>
+              <div className="flex items-center gap-3 text-[10px] font-mono text-slate-500">
+                <span className="hidden sm:inline">v1.0 (CRC-16)</span>
+                {isSerialOpen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
               </div>
+            </button>
 
-              <div>
-                <label className="text-[11px] text-slate-400 block mb-1">CHECKSUM</label>
-                <div className="bg-[#131720] border border-[#1E2532] text-emerald-400 px-2 py-1.5 rounded-sm flex items-center gap-1.5">
-                  <CheckCircle2 size={13} />
-                  <span className="text-[11px]">CRC-16 OK</span>
+            {isSerialOpen && (
+              <div className="p-4 pt-0 flex flex-col gap-3 border-t border-[#1A2230] mt-1">
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-3">
+                  <div>
+                    <label className="text-[11px] text-slate-400 block mb-1">BAUD RATE</label>
+                    <select
+                      value={baudRate}
+                      onChange={(e) => setBaudRate(e.target.value)}
+                      disabled={serial.status !== "disconnected"}
+                      className="w-full bg-[#131720] border border-[#1E2532] text-white px-2 py-1.5 rounded-sm focus:border-cyan-400 outline-none"
+                    >
+                      <option value="115200">115200 baud</option>
+                      <option value="57600">57600 baud</option>
+                      <option value="9600">9600 baud</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] text-slate-400 block mb-1">CHECKSUM</label>
+                    <div className="bg-[#131720] border border-[#1E2532] text-emerald-400 px-2 py-1.5 rounded-sm flex items-center gap-1.5">
+                      <CheckCircle2 size={13} />
+                      <span className="text-[11px]">CRC-16 OK</span>
+                    </div>
+                  </div>
+                </div>
+
+                {serial.status === "disconnected" ? (
+                  <button
+                    onClick={connect}
+                    className="w-full py-2 px-3 bg-[#131822] hover:bg-slate-800 border border-[#27344A] text-cyan-300 font-mono text-xs font-bold tracking-wide rounded-sm flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <Usb size={15} />
+                    <span>SELECCIONAR PUERTO COM</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => void serial.disconnect()}
+                    className="w-full py-2 px-3 bg-slate-900 hover:bg-rose-950/60 border border-slate-700 hover:border-rose-700 text-slate-300 hover:text-rose-200 font-mono text-xs font-bold rounded-sm flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <WifiOff size={15} />
+                    <span>DESCONECTAR PUERTO</span>
+                  </button>
+                )}
+
+                {/* Consola de estado del microcontrolador */}
+                <div className="bg-[#08090C] border border-[#161C26] p-2 rounded-sm text-[11px] font-mono mt-1">
+                  <div className="flex items-center justify-between text-slate-500 mb-1">
+                    <span>CONSOLA ARDUINO</span>
+                    <span>LOST: {serial.droppedSamples}</span>
+                  </div>
+                  <p className="text-slate-300 truncate" title={serial.lastMessage}>
+                    &gt; {serial.lastMessage}
+                  </p>
                 </div>
               </div>
-            </div>
-
-            {serial.status === "disconnected" ? (
-              <button
-                onClick={connect}
-                className="w-full py-2 px-3 bg-[#131822] hover:bg-slate-800 border border-[#27344A] text-cyan-300 font-mono text-xs font-bold tracking-wide rounded-sm flex items-center justify-center gap-2 transition-colors"
-              >
-                <Usb size={15} />
-                <span>SELECCIONAR PUERTO COM</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => void serial.disconnect()}
-                className="w-full py-2 px-3 bg-slate-900 hover:bg-rose-950/60 border border-slate-700 hover:border-rose-700 text-slate-300 hover:text-rose-200 font-mono text-xs font-bold rounded-sm flex items-center justify-center gap-2 transition-colors"
-              >
-                <WifiOff size={15} />
-                <span>DESCONECTAR PUERTO</span>
-              </button>
             )}
-
-            {/* Consola de estado del microcontrolador */}
-            <div className="bg-[#08090C] border border-[#161C26] p-2 rounded-sm text-[11px] font-mono">
-              <div className="flex items-center justify-between text-slate-500 mb-1">
-                <span>CONSOLA ARDUINO</span>
-                <span>LOST: {serial.droppedSamples}</span>
-              </div>
-              <p className="text-slate-300 truncate" title={serial.lastMessage}>
-                &gt; {serial.lastMessage}
-              </p>
-            </div>
           </div>
 
           {/* Card 2: Metadatos y Geometría de Probeta */}
@@ -568,9 +582,9 @@ export default function DashboardPage() {
         </div>
 
         {/* ======================================================================= */}
-        {/* COLUMNA 2 (lg:col-span-6): TELEMETRÍA Y VISUALIZACIÓN CRÍTICA           */}
+        {/* COLUMNA 2 (lg:col-span-9): TELEMETRÍA Y VISUALIZACIÓN CRÍTICA           */}
         {/* ======================================================================= */}
-        <div className="lg:col-span-6 flex flex-col gap-5">
+        <div className="lg:col-span-9 flex flex-col gap-5">
           {/* Panel de Gráfica: Curva Esfuerzo vs Deformación */}
           <div className="bg-[#0D1016] border border-[#1A2230] rounded-sm p-4 flex flex-col min-h-[460px]">
             <div className="flex items-center justify-between pb-3 border-b border-[#1A2230]">
@@ -580,15 +594,41 @@ export default function DashboardPage() {
                   CURVA ESFUERZO σ (MPa) vs DEFORMACIÓN UNITARIA ε (%)
                 </h2>
               </div>
-              <div className="flex items-center gap-3 font-mono text-xs">
-                <span className="text-slate-400">
-                  MUESTRAS: <strong className="text-laser font-mono-numbers">{serial.samples.length}</strong>
-                </span>
-                {serial.droppedSamples > 0 && (
-                  <span className="text-amber-400 bg-amber-950/40 border border-amber-800 px-1.5 py-0.5 rounded-sm text-[10px]">
-                    DROP: {serial.droppedSamples}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-3 font-mono text-xs">
+                  <span className="text-slate-400">
+                    MUESTRAS: <strong className="text-laser font-mono-numbers">{serial.samples.length}</strong>
                   </span>
-                )}
+                  {serial.droppedSamples > 0 && (
+                    <span className="text-amber-400 bg-amber-950/40 border border-amber-800 px-1.5 py-0.5 rounded-sm text-[10px]">
+                      DROP: {serial.droppedSamples}
+                    </span>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => downloadCsv(`ensayo-${setup.specimenId || "sin-id"}.csv`, csv)}
+                    disabled={!csv || !serial.samples.length}
+                    className="py-1 px-2.5 bg-[#131720] hover:bg-slate-800 border border-[#1E2532] text-slate-300 font-mono text-xs font-semibold rounded-sm flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    title="Descargar matriz numérica cruda para MATLAB / Python / Excel"
+                  >
+                    <Download size={13} className="text-cyan-400" />
+                    <span>CSV</span>
+                  </button>
+                  <button
+                    onClick={downloadPdf}
+                    disabled={!serial.samples.length || exportingPdf}
+                    className="py-1 px-2.5 bg-[#131B2A] hover:bg-slate-800 border border-[#273B5A] text-white font-mono text-xs font-semibold rounded-sm flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    title="Generar reporte formal PDF"
+                  >
+                    {exportingPdf ? (
+                      <Loader2 size={13} className="animate-spin text-laser" />
+                    ) : (
+                      <FileText size={13} className="text-laser" />
+                    )}
+                    <span>PDF</span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -727,63 +767,14 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+      </main>
 
-        {/* ======================================================================= */}
-        {/* COLUMNA 3 (lg:col-span-3): EXPORTACIÓN LOCAL Y AGENTE GEMINI            */}
-        {/* ======================================================================= */}
-        <div className="lg:col-span-3 flex flex-col gap-5">
-          {/* Card 1: Módulo de Exportación Trazable (Cero Almacenamiento Cloud) */}
-          <div className="bg-[#0D1016] border border-[#1A2230] rounded-sm p-4 flex flex-col gap-3">
-            <div className="flex items-center justify-between pb-2 border-b border-[#1A2230]">
-              <div className="flex items-center gap-2">
-                <HardDriveDownload size={16} className="text-emerald-400" />
-                <h2 className="font-mono text-xs font-bold tracking-wider text-slate-200 uppercase">
-                  EXPORTACIÓN LOCAL // CERO CLOUD
-                </h2>
-              </div>
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-1.5 py-0.5 rounded-sm">
-                100% CLIENT
-              </span>
-            </div>
-
-            <p className="text-[11px] font-mono text-slate-400 leading-relaxed">
-              Todos los datos de ensayos se generan en la memoria del navegador. Preservación garantizada de cuota cloud.
-            </p>
-
-            <div className="space-y-2 pt-1">
-              <button
-                onClick={downloadPdf}
-                disabled={!serial.samples.length || exportingPdf}
-                className="w-full py-2 px-3 bg-[#131B2A] hover:bg-slate-800 border border-[#273B5A] text-white font-mono text-xs font-semibold rounded-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                title="Generar reporte formal PDF con gráfica integrada y tabla de puntos"
-              >
-                {exportingPdf ? (
-                  <>
-                    <Loader2 size={15} className="animate-spin text-laser" />
-                    <span>GENERANDO REPORTE PDF...</span>
-                  </>
-                ) : (
-                  <>
-                    <FileText size={15} className="text-laser" />
-                    <span>REPORTE FORMAL PDF (jsPDF)</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                onClick={() => downloadCsv(`ensayo-${setup.specimenId || "sin-id"}.csv`, csv)}
-                disabled={!csv || !serial.samples.length}
-                className="w-full py-2 px-3 bg-[#131720] hover:bg-slate-800 border border-[#1E2532] text-slate-300 font-mono text-xs font-semibold rounded-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                title="Descargar matriz numérica cruda para MATLAB / Python / Excel"
-              >
-                <Download size={15} className="text-cyan-400" />
-                <span>DESCARGAR MATRIZ CRUDA CSV</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Card 2: Asistente Operativo Industrial (Google Gemini 3.8 Flash) */}
-          <div className="bg-[#0D1016] border border-[#1A2230] rounded-sm p-4 flex-1 flex flex-col min-h-[380px]">
+      {/* ========================================================================= */}
+      {/* FLOATING ASSISTANT GEMINI                                               */}
+      {/* ========================================================================= */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+        {isAssistantOpen && (
+          <div className="bg-[#0D1016] border border-[#1A2230] rounded-sm p-4 w-[360px] md:w-[420px] shadow-2xl flex flex-col min-h-[460px] max-h-[70vh] animate-in slide-in-from-bottom-5">
             <div className="flex items-center justify-between pb-2 border-b border-[#1A2230]">
               <div className="flex items-center gap-2">
                 <Bot size={16} className="text-laser" />
@@ -791,7 +782,12 @@ export default function DashboardPage() {
                   ASISTENTE // GEMINI 3.8 FLASH
                 </h2>
               </div>
-              <span className="w-2 h-2 rounded-full bg-laser animate-pulse-laser" />
+              <button 
+                onClick={() => setIsAssistantOpen(false)}
+                className="text-slate-500 hover:text-white"
+              >
+                ✕
+              </button>
             </div>
 
             {/* Quick action chips */}
@@ -819,7 +815,7 @@ export default function DashboardPage() {
             {/* Ventana de mensajes de terminal */}
             <div
               ref={chatScrollRef}
-              className="flex-1 overflow-y-auto space-y-2.5 p-2 bg-[#080A0E] border border-[#161C26] rounded-sm font-mono text-xs max-h-[260px]"
+              className="flex-1 overflow-y-auto space-y-2.5 p-2 bg-[#080A0E] border border-[#161C26] rounded-sm font-mono text-xs"
             >
               {chatMessages.map((msg, idx) => (
                 <div
@@ -850,8 +846,8 @@ export default function DashboardPage() {
             {/* Formulario de consulta a Gemini */}
             <form
               onSubmit={(e) => {
-                e.preventDefault();
-                void submitAssistant();
+               e.preventDefault();
+               void submitAssistant();
               }}
               className="mt-2.5 flex gap-2"
             >
@@ -871,8 +867,16 @@ export default function DashboardPage() {
               </button>
             </form>
           </div>
-        </div>
-      </main>
+        )}
+
+        <button
+          onClick={() => setIsAssistantOpen(!isAssistantOpen)}
+          className="w-14 h-14 bg-laser hover:bg-[#ff4d9f] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,46,147,0.3)] transition-all hover:scale-105 active:scale-95"
+          title="Abrir Asistente Gemini"
+        >
+          {isAssistantOpen ? <Minimize2 size={24} className="text-white" /> : <Bot size={28} className="text-white" />}
+        </button>
+      </div>
     </div>
   );
 }
