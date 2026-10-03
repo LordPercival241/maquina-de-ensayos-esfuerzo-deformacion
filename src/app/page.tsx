@@ -107,15 +107,15 @@ export default function HomePage() {
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#10141C] border border-[#1A2230] text-xs font-mono text-laser rounded-sm">
               <Activity size={14} />
-              <span>CARACTERIZACIÓN DE MATERIALES HASTA 100 N</span>
+              <span>Máquina Universal de Ensayos de Fuerza de Bajo Costo</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight font-sans">
-              Datos de ensayo que se pueden <span className="text-laser">defender</span>.
+              Adquisición de datos en tiempo real y caracterización   <span className="text-laser">mecánica de materiales</span>.
             </h1>
 
             <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl font-sans">
-              Plataforma de adquisición serial en tiempo real para probetas poliméricas. Curvas continuas de esfuerzo $\sigma$ frente a deformación $\varepsilon$, cálculo de rigidez y reportes certificados sin intermediarios en la nube.
+              Plataforma de adquisición serial en tiempo real para probetas poliméricas. Curvas continuas de esfuerzo frente a deformación, cálculo de rigidez y reportes certificados.
             </p>
 
             {/* Technical Spec Matrix */}
@@ -304,9 +304,9 @@ export default function HomePage() {
             </div>
           </div>
           <div className="text-xs font-mono text-slate-600 md:text-right">
-            UTM-LAB © {new Date().getFullYear()} — Universidad Tecnológica.
+            UTM-LAB © {new Date().getFullYear()} — Universidad Nacional de Ingeniería.
             <br />
-            Sistema de Adquisición de Datos de Grado Metrológico.
+            Sistema de Adquisición de Datos.
           </div>
         </div>
       </footer>
