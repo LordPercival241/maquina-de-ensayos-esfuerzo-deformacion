@@ -90,13 +90,13 @@ export default function HomePage() {
             UTM<span className="text-laser">·</span>LAB
           </Link>
           <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-sm">
-            INSTRUMENTACIÓN METROLÓGICA
+            IF511A Proyecto de Instrumentación Electrónica
           </span>
         </div>
 
         <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="hidden sm:inline">SISTEMA EN LÍNEA // VERCEL EDGE</span>
+          <span className="hidden sm:inline">EN LÍNEA </span>
         </div>
       </header>
 
@@ -142,7 +142,7 @@ export default function HomePage() {
                 <FileText size={14} className="text-cyan-400" /> Exportación PDF con jsPDF
               </span>
               <span className="flex items-center gap-1.5">
-                <Cpu size={14} className="text-emerald-400" /> Gemini 3.8 Flash
+                <Cpu size={14} className="text-emerald-400" /> Lima Perú
               </span>
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <ShieldCheck size={18} className="text-laser" />
                 <h2 className="font-mono text-xs font-bold tracking-wider text-slate-200 uppercase">
-                  CONTROL DE ACCESO // OPERADORES
+                  CONTROL DE ACCESO
                 </h2>
               </div>
               <span className="text-[10px] font-mono text-slate-500">AUTH RLS</span>
@@ -168,11 +168,10 @@ export default function HomePage() {
                   setError(null);
                   setSuccess(null);
                 }}
-                className={`py-2 px-3 text-center transition-all rounded-sm font-semibold ${
-                  tab === "login"
-                    ? "bg-[#0D1016] text-laser border border-laser/30 shadow-sm"
-                    : "text-slate-400 hover:text-white"
-                }`}
+                className={`py-2 px-3 text-center transition-all rounded-sm font-semibold ${tab === "login"
+                  ? "bg-[#0D1016] text-laser border border-laser/30 shadow-sm"
+                  : "text-slate-400 hover:text-white"
+                  }`}
               >
                 INICIAR SESIÓN
               </button>
@@ -183,11 +182,10 @@ export default function HomePage() {
                   setError(null);
                   setSuccess(null);
                 }}
-                className={`py-2 px-3 text-center transition-all rounded-sm font-semibold ${
-                  tab === "register"
-                    ? "bg-[#0D1016] text-laser border border-laser/30 shadow-sm"
-                    : "text-slate-400 hover:text-white"
-                }`}
+                className={`py-2 px-3 text-center transition-all rounded-sm font-semibold ${tab === "register"
+                  ? "bg-[#0D1016] text-laser border border-laser/30 shadow-sm"
+                  : "text-slate-400 hover:text-white"
+                  }`}
               >
                 CREAR CUENTA
               </button>
@@ -278,7 +276,7 @@ export default function HomePage() {
 
             <div className="pt-2 border-t border-[#1A2230] text-center">
               <span className="text-[11px] font-mono text-slate-500">
-                Seguridad garantizada mediante Supabase Auth y Row Level Security.
+                Supabase Auth
               </span>
             </div>
           </div>
@@ -293,11 +291,15 @@ export default function HomePage() {
             <div className="flex gap-4">
               <div className="flex flex-col">
                 <span className="text-white">Dante Olivas</span>
-                <span className="text-laser text-[10px]">Ing. Electrónico</span>
+                <span className="text-laser text-[10px]"> Lord Percival </span>
               </div>
               <div className="flex flex-col border-l border-[#1A2230] pl-4">
-                <span className="text-white">Eduardo Alarcon</span>
-                <span className="text-laser text-[10px]">Ing. Mecatrónico</span>
+                <span className="text-white">Jhosep Tineo</span>
+                <span className="text-laser text-[10px]">yoru</span>
+              </div>
+              <div className="flex flex-col border-l border-[#1A2230] pl-4">
+                <span className="text-white">Juan Aguero</span>
+                <span className="text-laser text-[10px]">La Loba </span>
               </div>
             </div>
           </div>
