@@ -306,15 +306,8 @@ export default function DashboardPage() {
               UTM<span className="text-laser">·</span>LAB
             </h1>
             <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400 bg-slate-900/90 border border-slate-800 px-2 py-0.5 rounded-sm">
-              SUITE METROLÓGICA v1.0
+              IF511 A
             </span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-2 pl-4 border-l border-[#1A2230] text-xs font-mono text-slate-400">
-            <ShieldCheck size={14} className="text-emerald-400" />
-            <span>LÍMITE SEGURO: 100 N</span>
-            <span className="text-slate-600">|</span>
-            <span>HX711 + NEMA 17</span>
           </div>
         </div>
 
@@ -322,9 +315,8 @@ export default function DashboardPage() {
         <div className="flex items-center gap-3">
           <div className={`flex items-center gap-2 px-3 py-1 rounded-sm border text-xs font-mono font-semibold tracking-wide ${currentStatus.color}`}>
             <span
-              className={`w-2 h-2 rounded-full ${currentStatus.badge} ${
-                currentStatus.pulse ? (serial.status === "running" ? "animate-pulse-laser" : "animate-ping") : ""
-              }`}
+              className={`w-2 h-2 rounded-full ${currentStatus.badge} ${currentStatus.pulse ? (serial.status === "running" ? "animate-pulse-laser" : "animate-ping") : ""
+                }`}
             />
             <span>{currentStatus.label}</span>
           </div>
@@ -349,15 +341,14 @@ export default function DashboardPage() {
       {/* Banner de Avisos y Notificaciones */}
       {notice && (
         <div
-          className={`border-b px-6 py-2 text-xs font-mono flex items-center justify-between transition-all ${
-            notice.type === "error"
-              ? "bg-rose-950/40 border-rose-800 text-rose-300"
-              : notice.type === "warn"
+          className={`border-b px-6 py-2 text-xs font-mono flex items-center justify-between transition-all ${notice.type === "error"
+            ? "bg-rose-950/40 border-rose-800 text-rose-300"
+            : notice.type === "warn"
               ? "bg-amber-950/40 border-amber-800 text-amber-300"
               : notice.type === "success"
-              ? "bg-emerald-950/40 border-emerald-800 text-emerald-300"
-              : "bg-cyan-950/30 border-cyan-800 text-cyan-300"
-          }`}
+                ? "bg-emerald-950/40 border-emerald-800 text-emerald-300"
+                : "bg-cyan-950/30 border-cyan-800 text-cyan-300"
+            }`}
         >
           <div className="flex items-center gap-2">
             <AlertTriangle size={14} />
@@ -386,11 +377,11 @@ export default function DashboardPage() {
               <div className="flex items-center gap-2">
                 <Usb size={16} className={serial.status === "disconnected" ? "text-slate-500" : "text-cyan-400"} />
                 <h2 className="font-mono text-xs font-bold tracking-wider text-slate-200 uppercase">
-                  ENLACE SERIAL // WEB SERIAL API
+                  ENLACE SERIAL
                 </h2>
               </div>
               <div className="flex items-center gap-3 text-[10px] font-mono text-slate-500">
-                <span className="hidden sm:inline">v1.0 (CRC-16)</span>
+                <span className="hidden sm:inline">v1 </span>
                 {isSerialOpen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
               </div>
             </button>
@@ -462,7 +453,7 @@ export default function DashboardPage() {
                   PARÁMETROS DE LA MUESTRA
                 </h2>
               </div>
-              <span className="text-[10px] font-mono text-laser">ASTM D638</span>
+              <span className="text-[10px] font-mono text-laser"> FC UNI </span>
             </div>
 
             <div className="space-y-2.5 text-xs font-mono">
@@ -782,7 +773,7 @@ export default function DashboardPage() {
                   ASISTENTE // GEMINI 3.8 FLASH
                 </h2>
               </div>
-              <button 
+              <button
                 onClick={() => setIsAssistantOpen(false)}
                 className="text-slate-500 hover:text-white"
               >
@@ -820,11 +811,10 @@ export default function DashboardPage() {
               {chatMessages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`p-2 rounded-sm border leading-relaxed ${
-                    msg.role === "user"
-                      ? "bg-[#141B26] border-[#222E42] text-slate-100 ml-4"
-                      : "bg-[#0E131C] border-[#18212F] text-slate-300 mr-2"
-                  }`}
+                  className={`p-2 rounded-sm border leading-relaxed ${msg.role === "user"
+                    ? "bg-[#141B26] border-[#222E42] text-slate-100 ml-4"
+                    : "bg-[#0E131C] border-[#18212F] text-slate-300 mr-2"
+                    }`}
                 >
                   <div className="flex items-center justify-between text-[10px] text-slate-500 mb-1 border-b border-[#1A2230]/60 pb-0.5">
                     <span className={msg.role === "user" ? "text-cyan-400" : "text-laser font-bold"}>
@@ -846,8 +836,8 @@ export default function DashboardPage() {
             {/* Formulario de consulta a Gemini */}
             <form
               onSubmit={(e) => {
-               e.preventDefault();
-               void submitAssistant();
+                e.preventDefault();
+                void submitAssistant();
               }}
               className="mt-2.5 flex gap-2"
             >
