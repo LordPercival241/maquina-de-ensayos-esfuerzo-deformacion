@@ -828,7 +828,7 @@ export default function DashboardPage() {
               {chatLoading && (
                 <div className="flex items-center gap-2 text-laser text-[11px] p-2 font-mono">
                   <Loader2 size={13} className="animate-spin" />
-                  <span>CONSULTANDO GEMINI 3.8 FLASH...</span>
+                  <span>CONSULTANDO...</span>
                 </div>
               )}
             </div>

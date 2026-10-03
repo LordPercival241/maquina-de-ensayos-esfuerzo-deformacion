@@ -74,7 +74,7 @@ El sistema opera bajo un modelo desacoplado: **el firmware local garantiza la se
 │   Servicios en la Nube                                                                 │
 │   ├── Vercel (Alojamiento Edge/Serverless con HTTPS obligatorio)                       │
 │   ├── Supabase Auth (Acceso seguro por correo y contraseña de operadores)              │
-│   └── Google Gemini API (Respuestas contextualizadas mediante Gemini 3.8 Flash)        │
+│   └── Google Gemini API (Respuestas contextualizadas mediante Gemini)        │
 │                                                                                        │
 │   * Cero Consumo de Almacenamiento Cloud: Todos los datos de ensayos (curvas,          │
 │     muestras completas y reportes PDF/CSV) se generan en el navegador del operador     │
@@ -237,7 +237,7 @@ $$\varepsilon = \frac{\Delta L}{L_0} \quad [\text{adimensional}]$$
 
    # Variables privadas de servidor (Google Gemini API)
    GEMINI_API_KEY=AIzaSy...
-   GEMINI_MODEL=gemini-3.8-flash
+   GEMINI_MODEL=gemini-2.5-flash
    ```
 
 4. Configurar la base de datos en Supabase:
@@ -272,7 +272,7 @@ El proyecto está 100% optimizado para desplegarse en **Vercel**:
    * `NEXT_PUBLIC_SUPABASE_URL`
    * `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    * `GEMINI_API_KEY`
-   * `GEMINI_MODEL` (valor configurado: `gemini-3.8-flash`)
+   * `GEMINI_MODEL` (valor configurado: `gemini-2.5-flash`)
 3. En **Supabase → Authentication → URL Configuration**, añada su dominio de Vercel (`https://<proyecto>.vercel.app`) en *Site URL* y en *Redirect URLs*.
 4. Realice el despliegue con el botón **Deploy**.
 
