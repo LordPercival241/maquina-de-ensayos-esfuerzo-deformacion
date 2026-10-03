@@ -121,7 +121,7 @@ export default function DashboardPage() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      text: "Terminal de Diagnóstico UTM Lab en línea (Gemini 3.8 Flash). Monitoreando parámetros de celda (10 kg / 100 N) y motor NEMA 17. Formule su consulta técnica o solicite validación de norma ASTM/ISO.",
+      text: "Aqui puedes consultarme como funciona la plataforma.",
       time: "INIT",
     },
   ]);
@@ -770,7 +770,7 @@ export default function DashboardPage() {
               <div className="flex items-center gap-2">
                 <Bot size={16} className="text-laser" />
                 <h2 className="font-mono text-xs font-bold tracking-wider text-slate-200 uppercase">
-                  ASISTENTE // GEMINI 3.8 FLASH
+                  ASISTENTE VIRTUAL DE UTM LAB
                 </h2>
               </div>
               <button
