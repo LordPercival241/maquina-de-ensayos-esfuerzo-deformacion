@@ -111,7 +111,7 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight font-sans">
-              Adquisición de datos en tiempo real y caracterización   <span className="text-laser">mecánica de materiales</span>.
+              Adquisición de datos en <span className="text-laser">tiempo real</span>.
             </h1>
 
             <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl font-sans">
