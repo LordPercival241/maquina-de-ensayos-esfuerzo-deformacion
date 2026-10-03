@@ -20,11 +20,11 @@ No inventes características de la máquina, valores de calibración o normas. R
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GEMINI_KEY;
-  let rawModel = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+  let rawModel = process.env.GEMINI_MODEL || "gemini-2.5-flash";
   // En Google AI Studio la API pública de Gemini admite gemini-1.5-flash, gemini-2.0-flash o gemini-1.5-pro.
-  // Si se configuró gemini-3.8-flash, normalizamos a gemini-1.5-flash para que Google API no devuelva 404:
-  if (rawModel.includes("3.8") || rawModel === "gemini-flash") {
-    rawModel = "gemini-1.5-flash";
+  // Si se configuró gemini-2.5-flash, normalizamos a gemini-1.5-flash para que Google API no devuelva 404:
+  if (rawModel.includes("2.5") || rawModel === "gemini-flash") {
+    rawModel = "gemini-2.5-flash";
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -93,9 +93,9 @@ export async function POST(request: NextRequest) {
 
   try {
     let response = await makeGeminiRequest(rawModel);
-    // Si el modelo retorna 404 (modelo no reconocido por Google), intentamos con gemini-1.5-flash
-    if (response.status === 404 && rawModel !== "gemini-1.5-flash") {
-      response = await makeGeminiRequest("gemini-1.5-flash");
+    // Si el modelo retorna 404 (modelo no reconocido por Google), intentamos con gemini-2.5-flash
+    if (response.status === 404 && rawModel !== "gemini-2.5-flash") {
+      response = await makeGeminiRequest("gemini-2.5-flash");
     }
 
     if (!response.ok) {
