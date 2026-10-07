@@ -55,7 +55,7 @@ Ante esta necesidad, el proyecto propone el **diseño, construcción y validaci�
 
 | Integrante | Rol / Especialidad | Responsabilidades Principales |
 | :--- | :--- | :--- |
-| **Dante Aliguere Olivas Huaman** | **Software y Plataforma Web** | Arquitectura de software en Next.js, adquisición serial v1 con Web Serial API, validación CRC-16, autenticación y perfiles en Supabase, agente de IA con Google Gemini, exportación local PDF/CSV y despliegue en Vercel. |
+| **Dante Aliguere Olivas Huaman** | **Software y Plataforma Web** | Desarrollo de la arquitectura de software, adquisición de datos y conectarlos a la web, autenticación y perfiles en Supabase, agente de IA con Google Gemini, exportación local PDF/CSV y despliegue en Vercel. |
 | **Jhosep A. Tineo Santa Cruz** | **Instrumentación y Sensores** | Acondicionamiento de señal para celda de carga de 10 kg, etapa de amplificación/digitalización, integración con Arduino, calibración metrológica y evaluación de estabilidad. |
 | **Juan Jesus Agüero Ventura** | **Estructura Mecánica** | Modelado CAD 3D de la máquina, diseño y fabricación de pinzas de sujeción (mordazas), cálculo de tolerancias, soporte de guías y rigidez estructural. |
 | **------RETIRADO------** | **Potencia y Accionamiento** | Selección del motor paso a paso NEMA 17, driver de potencia, dimensionamiento eléctrico, fuente de alimentación y control de velocidad/torque del actuador. |
