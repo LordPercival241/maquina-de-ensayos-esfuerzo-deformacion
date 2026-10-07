@@ -1,6 +1,6 @@
 /*
  * ==============================================================================
- * UTM Lab — Firmware de Control e Instrumentación v1.0
+ * UTM Lab — Firmware de Control e Instrumentación 
  * Microcontrolador: Arduino Uno / Nano (ATmega328P)
  * 
  * Protocolo Serial v1 compatible con la plataforma web UTM Lab:

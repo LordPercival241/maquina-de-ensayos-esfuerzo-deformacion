@@ -4,28 +4,6 @@
 
 ---
 
-## 0. Estructura del Repositorio
-
-```text
-UTM - Proyecto de Instrumentación/
-├── Proyecto/                          ← Documentos del proyecto académico
-├── Resources/
-│   └── Software/                      ← Código fuente de la plataforma web (Next.js)
-│       ├── firmware/                  ← Firmware para Arduino Uno / Nano
-│       ├── src/                       ← Código fuente de la aplicación web
-│       ├── supabase/                  ← Migraciones de base de datos
-│       ├── docs/                      ← Documentación complementaria
-│       ├── package.json
-│       ├── next.config.ts
-│       └── ...
-└── README.md                          ← Este archivo
-```
-
-> [!IMPORTANT]
-> Todo el código fuente de la plataforma web se encuentra en **`Resources/Software/`**. Las instrucciones de instalación, ejecución y despliegue operan desde esa carpeta.
-
----
-
 ## 1. Introducción y Contexto
 
 La **ciencia de materiales** estudia las propiedades mecánicas, físicas y químicas de los materiales para comprender su comportamiento bajo cargas externas y fundamentar aplicaciones tecnológicas. Entre las propiedades de mayor interés se encuentran la resistencia a la tracción, la deformación elástica/plástica y el módulo de Young.
@@ -58,7 +36,7 @@ Ante esta necesidad, el proyecto propone el **diseño, construcción y validaci�
 | **Dante Aliguere Olivas Huaman** | **Software y Plataforma Web** | Arquitectura de software en Next.js, adquisición serial v1 con Web Serial API, validación CRC-16, autenticación y perfiles en Supabase, agente de IA con Google Gemini, exportación local PDF/CSV y despliegue en Vercel. |
 | **Jhosep A. Tineo Santa Cruz** | **Instrumentación y Sensores** | Acondicionamiento de señal para celda de carga de 10 kg, etapa de amplificación/digitalización, integración con Arduino, calibración metrológica y evaluación de estabilidad. |
 | **Juan Jesus Agüero Ventura** | **Estructura Mecánica** | Modelado CAD 3D de la máquina, diseño y fabricación de pinzas de sujeción (mordazas), cálculo de tolerancias, soporte de guías y rigidez estructural. |
-| **------RETIRADO------** | **Potencia y Accionamiento** | Selección del motor paso a paso NEMA 17, driver de potencia, dimensionamiento eléctrico, fuente de alimentación y control de velocidad/torque del actuador. |
+| **Andre Edmundo Sanchez Marquina** | **Potencia y Accionamiento** | Selección del motor paso a paso NEMA 17, driver de potencia, dimensionamiento eléctrico, fuente de alimentación y control de velocidad/torque del actuador. |
 
 ---
 
@@ -67,7 +45,7 @@ Ante esta necesidad, el proyecto propone el **diseño, construcción y validaci�
 El sistema opera bajo un modelo desacoplado: **el firmware local garantiza la seguridad física y la temporización crítica**, mientras que **el navegador web visualiza, procesa y genera los reportes**.
 
 <p align="center">
-  <img src="Resources/Software/Imagenes/grafico_flujo.png" alt="Diagrama de flujo del sistema" width="620">
+  <img src="Imagenes/grafico_flujo.png" alt="Diagrama de flujo del sistema" width="620">
 </p>
 
 ```text
@@ -180,11 +158,11 @@ EVENT,type=FAULT,detail=Error_lectura_celda
 EVENT,type=TEST_FINISHED
 ```
 
-### 6.4. Firmware de Control en Arduino (`Resources/Software/firmware/utm_controller/utm_controller.ino`)
+### 6.4. Firmware de Control en Arduino (`firmware/utm_controller/utm_controller.ino`)
 
 El proyecto incluye el código completo de firmware listo para cargar en microcontroladores **Arduino Uno / Nano (ATmega328P)**:
 
-* **Ruta del código:** [`firmware/utm_controller/utm_controller.ino`](Resources/Software/firmware/utm_controller/utm_controller.ino)
+* **Ruta del código:** [`firmware/utm_controller/utm_controller.ino`](firmware/utm_controller/utm_controller.ino)
 * **Velocidad de transmisión:** `115200 baudios`.
 * **Frecuencia de telemetría:** `10 Hz` (cada 100 ms).
 * **Asignación de Pines por Defecto:**
@@ -230,7 +208,7 @@ $$\varepsilon = \frac{\Delta L}{L_0} \quad [\text{adimensional}]$$
 
 1. Conecte el Arduino Uno o Nano a su computadora mediante cable USB.
 2. Abra **Arduino IDE**.
-3. Vaya a **Archivo → Abrir...** y seleccione [`Resources/Software/firmware/utm_controller/utm_controller.ino`](Resources/Software/firmware/utm_controller/utm_controller.ino).
+3. Vaya a **Archivo → Abrir...** y seleccione [`firmware/utm_controller/utm_controller.ino`](firmware/utm_controller/utm_controller.ino).
 4. En **Herramientas → Placa**, seleccione *Arduino Uno* o *Arduino Nano* (si utiliza un clon Nano, seleccione el procesador *ATmega328P (Old Bootloader)*).
 5. En **Herramientas → Puerto**, seleccione el puerto COM detectado.
 6. Haga clic en **Subir** (Upload).
@@ -264,7 +242,7 @@ $$\varepsilon = \frac{\Delta L}{L_0} \quad [\text{adimensional}]$$
 
 4. Configurar la base de datos en Supabase:
    * Abra el **SQL Editor** de su proyecto en Supabase.
-   * Ejecute la migración [`supabase/migrations/202609180001_initial.sql`](Resources/Software/supabase/migrations/202609180001_initial.sql).
+   * Ejecute la migración [`supabase/migrations/202609180001_initial.sql`](supabase/migrations/202609180001_initial.sql).
    * Verifique en **Authentication → Providers** que **Email** esté habilitado.
 
 5. Iniciar el servidor de desarrollo:
@@ -318,7 +296,7 @@ El proyecto está 100% optimizado para desplegarse en **Vercel**:
 - [x] Adquisición de componentes clave (Arduino, celda 10 kg, motor NEMA 17, driver).
 - [x] Desarrollo de la plataforma web en Next.js con soporte Web Serial, Recharts y Google Gemini.
 - [x] Autenticación de operadores en Supabase con RLS y exportación local de reportes PDF/CSV (cero consumo cloud).
-- [x] Implementación completa del firmware en Arduino con protocolo Serial v1, CRC-16/CCITT y bloqueos de seguridad ([`firmware/utm_controller/utm_controller.ino`](Resources/Software/firmware/utm_controller/utm_controller.ino)).
+- [x] Implementación completa del firmware en Arduino con protocolo Serial v1, CRC-16/CCITT y bloqueos de seguridad ([`firmware/utm_controller/utm_controller.ino`](firmware/utm_controller/utm_controller.ino)).
 - [x] Validación de compilación y preparación para despliegue en Vercel.
 - [ ] Calibración experimental con masas patrón de la celda de carga de 10 kg.
 - [ ] Fabricación de piezas CAD definitivas (mordazas y soportes de guías).
@@ -328,7 +306,7 @@ El proyecto está 100% optimizado para desplegarse en **Vercel**:
 
 ## 11. Documentación Complementaria
 
-* [Firmware para Arduino Uno / Nano](Resources/Software/firmware/utm_controller/utm_controller.ino)
-* [Guía de puesta en marcha rápida](Resources/Software/docs/SETUP.md)
-* [Migración de base de datos para Supabase](Resources/Software/supabase/migrations/202609180001_initial.sql)
-* [Documento de Estado del Arte](Resources/Software/Estado%20del%20arte_Olivas_Tineo_Ag%C3%BAero_%20Sanchez.pdf)
+* [Firmware para Arduino Uno / Nano](firmware/utm_controller/utm_controller.ino)
+* [Guía de puesta en marcha rápida](docs/SETUP.md)
+* [Migración de base de datos para Supabase](supabase/migrations/202609180001_initial.sql)
+* [Documento de Estado del Arte](Estado%20del%20arte_Olivas_Tineo_Ag%C3%BAero_%20Sanchez.pdf)
